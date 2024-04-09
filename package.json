@@ -4,11 +4,16 @@
   "displayName": "LeaderboardSystem",
   "description": "Easy implementation for a Leaderboard",
   "unity": "2019.1",
-  "dependencies": {},
+  "dependencies": {
+    "com.hextecgames.basics": "1.0.0",
+    "com.unity.services.leaderboards": "2.0.0",
+    "com.hextecgames.tweenlib": "2.0.0",
+    "com.unity.services.authentication": "1.0.0",
+    "com.unity.services.core": "1.0.0"
+  },
   "author": {
     "name": "HexTecGames"
   },
-  "hideInEditor": "false",
   "samples": [
     {
       "displayName": "Example 1",

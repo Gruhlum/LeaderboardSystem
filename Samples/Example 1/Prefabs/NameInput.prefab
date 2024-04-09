@@ -64,7 +64,6 @@ GameObject:
   - component: {fileID: 5751379652162415738}
   - component: {fileID: 6469458440558777915}
   - component: {fileID: 2512661879942938808}
-  - component: {fileID: 8755423204654303310}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -186,37 +185,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &8755423204654303310
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1000829966736353684}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: 99313878
-      Data2: 1081180239
-      Data3: 1611725227
-      Data4: -1602851138
-    Path: event:/UI/ui_button_mutate
-  Event: 
-  PlayEvent: 19
-  StopEvent: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  AllowNonRigidbodyDoppler: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
 --- !u!1 &1028634192986926692
 GameObject:
   m_ObjectHideFlags: 0

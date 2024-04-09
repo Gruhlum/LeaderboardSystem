@@ -62,12 +62,16 @@ namespace HexTecGames.LeaderboardSystem
         }
         private string playerName;
 
-
-
         private LeaderboardItem playerScore;
 
         private void Start()
         {
+            if (string.IsNullOrEmpty(leaderboardId))
+            {
+                Debug.LogError("LeaderboardId is empty!");
+                gameObject.SetActive(false);
+                return;
+            }
             playerHighscoreDisplay.SetItem(null);
             Login();
         }
@@ -140,6 +144,10 @@ namespace HexTecGames.LeaderboardSystem
 
         private string RemoveId(string input)
         {
+            if (string.IsNullOrEmpty(input))
+            {
+                return input;
+            }
             int index = input.IndexOf('#');
             if (index <= 0)
             {
@@ -153,7 +161,7 @@ namespace HexTecGames.LeaderboardSystem
             Debug.Log("playername is " + result);
             return result;
         }
-        public async void RetrieveAndDisplayScore(double score)
+        public async void RetrieveAndDisplayScore(int score)
         {
             gameObject.SetActive(true);
             if (UnityServices.State != ServicesInitializationState.Initialized)
@@ -202,6 +210,10 @@ namespace HexTecGames.LeaderboardSystem
             var scoresResponse = await LeaderboardsService.Instance.GetScoresAsync(leaderboardId);
             scoreDisplayC.SetItems(GenerateLeaderboardItems(scoresResponse.Results));
         }
+        public void AddTestScore(int score)
+        {
+            RetrieveAndDisplayScore(score);
+        }
         public void GetNextPage()
         {
             if (maximumPages != -1 && currentPage + 1 >= maximumPages)
@@ -220,13 +232,22 @@ namespace HexTecGames.LeaderboardSystem
         }
         public async Task<LeaderboardItem> GetPlayerScore()
         {
-            var scoresResponse = await LeaderboardsService.Instance.GetPlayerScoreAsync(leaderboardId);
-            if (scoresResponse == null)
+            try
             {
+                var scoresResponse = await LeaderboardsService.Instance.GetPlayerScoreAsync(leaderboardId);
+                if (scoresResponse == null)
+                {
+                    Debug.Log("failed to get score response");
+                    return null;
+                }
+                PlayerItem = GenerateLeaderboardItem(scoresResponse);
+                return PlayerItem;
+            }
+            catch (System.Exception ex)
+            {
+                Debug.Log(ex.Message);
                 return null;
             }
-            PlayerItem = GenerateLeaderboardItem(scoresResponse);
-            return PlayerItem;
         }
         public async void GetLeaderboardPage(int page)
         {
