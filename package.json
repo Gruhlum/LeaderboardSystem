@@ -1,0 +1,19 @@
+{
+  "name": "com.hextecgames.leaderboardsystem",
+  "version": "1.0.0",
+  "displayName": "LeaderboardSystem",
+  "description": "Easy implementation for a Leaderboard",
+  "unity": "2019.1",
+  "dependencies": {},
+  "author": {
+    "name": "HexTecGames"
+  },
+  "hideInEditor": "false",
+  "samples": [
+    {
+      "displayName": "Example 1",
+      "description": "Example 1 description",
+      "path": "Samples/Example 1"
+    }
+  ]
+}
