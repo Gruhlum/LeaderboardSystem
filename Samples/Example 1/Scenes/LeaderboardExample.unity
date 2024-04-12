@@ -1116,6 +1116,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4164169199824422630, guid: 286f2c52d456e66478e7f2ea09635583, type: 3}
+      propertyPath: censorOtherNames
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4164169199824422630, guid: 286f2c52d456e66478e7f2ea09635583, type: 3}
+      propertyPath: censorPlayerName
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4364358748016342146, guid: 286f2c52d456e66478e7f2ea09635583, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Unity.Services.Leaderboards.Models;
 using TMPro;
 using HexTecGames.Basics.UI;
+using HexTecGames.Basics;
 
 namespace HexTecGames.LeaderboardSystem
 {
@@ -24,9 +25,13 @@ namespace HexTecGames.LeaderboardSystem
         [SerializeField] private TextDisplay playerNameDisplay = default;
         [SerializeField] private TextDisplay currentScoreDisplay = default;
 
+        [Header("Name Settings")]
         [SerializeField] private bool truncateId = true;
+        [SerializeField] private bool censorPlayerName = default;
+        [DrawIf(nameof(censorPlayerName), true)][SerializeField] private string playerNameOverride = "You";
+        [SerializeField] private bool censorOtherNames = default;
+        [DrawIf(nameof(censorOtherNames), true)][SerializeField] private string otherNameOverride = "Player";
 
-        
         private int currentPage;
         private int maximumPages = -1;
 
@@ -56,13 +61,17 @@ namespace HexTecGames.LeaderboardSystem
                     return;
                 }
                 playerName = value;
-                Debug.Log("Changed name to: " + playerName);
                 DisplayPlayerName();
             }
         }
         private string playerName;
 
         private LeaderboardItem playerScore;
+
+        void OnEnable()
+        {
+            playerNameDisplay.gameObject.SetActive(!censorPlayerName);
+        }
 
         private void Start()
         {
@@ -108,7 +117,7 @@ namespace HexTecGames.LeaderboardSystem
         private void DisplayPlayerName()
         {
             nameGUI.text = PlayerName;
-            if (!string.IsNullOrEmpty(PlayerName))
+            if (!censorPlayerName && !string.IsNullOrEmpty(PlayerName))
             {
                 playerNameDisplay.SetText(PlayerName);
             }
@@ -122,7 +131,11 @@ namespace HexTecGames.LeaderboardSystem
         }
         public void SetPlayerName(string name)
         {
-            if (truncateId)
+            if (censorPlayerName)
+            {
+                PlayerName = playerNameOverride;
+            }
+            else if (truncateId)
             {
                 PlayerName = RemoveId(name);
             }
@@ -301,13 +314,23 @@ namespace HexTecGames.LeaderboardSystem
         public LeaderboardItem GenerateLeaderboardItem(LeaderboardEntry leaderboardEntry)
         {
             string entryPlayerName;
-            if (truncateId)
+            
+            bool isPlayer = AuthenticationService.Instance.PlayerId == leaderboardEntry.PlayerId;
+            
+            if (isPlayer && censorPlayerName)
+            {
+                entryPlayerName = playerNameOverride;
+            }
+            else if (!isPlayer && censorOtherNames)
+            {
+                entryPlayerName = $"{otherNameOverride} {leaderboardEntry.Rank}";
+            }
+            else if (truncateId)
             {
                 entryPlayerName = RemoveId(leaderboardEntry.PlayerName);
             }
             else entryPlayerName = leaderboardEntry.PlayerName;
 
-            bool isPlayer = AuthenticationService.Instance.PlayerId == leaderboardEntry.PlayerId;
 
             return new LeaderboardItem(entryPlayerName, leaderboardEntry.Rank + 1, (int)leaderboardEntry.Score, isPlayer);
         }

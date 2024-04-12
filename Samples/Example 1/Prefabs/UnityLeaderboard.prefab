@@ -194,7 +194,12 @@ MonoBehaviour:
   nameGUI: {fileID: 4332383250481421184}
   playerNameDisplay: {fileID: 3512573018859844761}
   currentScoreDisplay: {fileID: 1711547654713304655}
+  editNameGO: {fileID: 1814140564218065558}
   truncateId: 1
+  censorPlayerName: 0
+  playerNameOverride: You
+  censorOtherNames: 0
+  otherNameOverride: Player
 --- !u!1 &1262990951626991407
 GameObject:
   m_ObjectHideFlags: 0
