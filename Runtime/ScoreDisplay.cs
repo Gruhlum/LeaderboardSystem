@@ -33,6 +33,11 @@ namespace HexTecGames.LeaderboardSystem
         }
         public void UpdateName(string name)
         {
+            if (Item == null)
+            {
+                return;
+            }
+            Item.name = name;
             nameGUI.text = name;
         }
         public override void SetHighlight(bool active)

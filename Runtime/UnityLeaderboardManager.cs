@@ -128,12 +128,11 @@ namespace HexTecGames.LeaderboardSystem
             {
                 playerNameDisplay.SetText(PlayerName);
             }
-            
             scoreDisplayC.UpdatePlayerName(PlayerName);
             playerHighscoreDisplay.UpdateName(PlayerName);
             if (PlayerItem != null)
             {
-                PlayerItem.name = PlayerName;
+                PlayerItem.name = PlayerName;                
             }
         }
         public void SetPlayerName(string name)
@@ -321,9 +320,9 @@ namespace HexTecGames.LeaderboardSystem
         public LeaderboardItem GenerateLeaderboardItem(LeaderboardEntry leaderboardEntry)
         {
             string entryPlayerName;
-            
+
             bool isPlayer = AuthenticationService.Instance.PlayerId == leaderboardEntry.PlayerId;
-            
+
             if (isPlayer && censorPlayerName)
             {
                 entryPlayerName = playerNameOverride;
