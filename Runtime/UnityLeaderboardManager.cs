@@ -98,10 +98,13 @@ namespace HexTecGames.LeaderboardSystem
             }
             if (!triedInit)
             {
-                Login();
+                Init();
             }
         }
-
+        void OnDisable()
+        {
+            triedInit = false;
+        }
         [ContextMenu("Delete Player Account")]
         public async void DeletePlayerAccount()
         {
@@ -116,19 +119,21 @@ namespace HexTecGames.LeaderboardSystem
             }
             await AuthenticationService.Instance.DeleteAccountAsync();
         }
-        private async void Login()
-        {
-            await Init();
-        }
         private async Task Init()
         {
+            if (triedInit)
+            {
+                return;
+            }
             triedInit = true;
             if (UnityServices.State != ServicesInitializationState.Initialized)
             {
+                Debug.Log("Trying to initialize UnityServices");
                 await UnityServices.InitializeAsync();
             }
             if (UnityServices.State != ServicesInitializationState.Initialized)
             {
+                Debug.Log("Initialization failed!");
                 return;
             }
 
@@ -136,8 +141,10 @@ namespace HexTecGames.LeaderboardSystem
             {
                 try
                 {
+                    Debug.Log("Attempting to sign in");
                     await AuthenticationService.Instance.SignInAnonymouslyAsync();
                     initSuccess = true;
+                    Debug.Log("sign in success");
                     loadingText.gameObject.SetActive(false);
                 }
                 catch (System.Exception e)
@@ -151,7 +158,7 @@ namespace HexTecGames.LeaderboardSystem
                 initSuccess = true;
                 loadingText.gameObject.SetActive(false);
             }
-            
+
             if (AuthenticationService.Instance.PlayerName != null)
             {
                 SetPlayerName(AuthenticationService.Instance.PlayerName);
