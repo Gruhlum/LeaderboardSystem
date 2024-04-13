@@ -106,7 +106,14 @@ namespace HexTecGames.LeaderboardSystem
 
             if (!AuthenticationService.Instance.IsSignedIn)
             {
-                await AuthenticationService.Instance.SignInAnonymouslyAsync();
+                try
+                {
+                    await AuthenticationService.Instance.SignInAnonymouslyAsync();
+                }
+                catch (System.Exception)
+                {
+                    Debug.Log("Error when signing in!");
+                }
             }
             SetPlayerName(AuthenticationService.Instance.PlayerName);
         }
