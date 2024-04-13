@@ -192,9 +192,9 @@ MonoBehaviour:
   nameInput: {fileID: 1306483651373887094}
   ShowPlayerScoreBtn: {fileID: 88543414849081272}
   nameGUI: {fileID: 4332383250481421184}
+  loadingText: {fileID: 4286516946237375107}
   playerNameDisplay: {fileID: 3512573018859844761}
   currentScoreDisplay: {fileID: 1711547654713304655}
-  editNameGO: {fileID: 1814140564218065558}
   truncateId: 1
   censorPlayerName: 0
   playerNameOverride: You
@@ -969,7 +969,6 @@ MonoBehaviour:
   - {fileID: 2708686766540597709}
   - {fileID: 6226828568886430838}
   items: []
-  loadingText: {fileID: 4286516946237375107}
   references:
     version: 2
     RefIds: []

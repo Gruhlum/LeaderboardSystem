@@ -33,7 +33,8 @@ namespace HexTecGames.LeaderboardSystem
         [SerializeField] private bool censorOtherNames = default;
         [DrawIf(nameof(censorOtherNames), true)][SerializeField] private string otherNameOverride = "Player";
 
-        private bool isSignedIn;
+        private bool triedInit;
+        private bool initSuccess;
         private int currentPage;
         private int maximumPages = -1;
 
@@ -78,7 +79,6 @@ namespace HexTecGames.LeaderboardSystem
          */
 
 
-
         void OnEnable()
         {
             if (playerNameDisplay != null)
@@ -96,7 +96,10 @@ namespace HexTecGames.LeaderboardSystem
             {
                 playerHighscoreDisplay.SetItem(null);
             }
-            Login();
+            if (!triedInit)
+            {
+                Login();
+            }
         }
 
         [ContextMenu("Delete Player Account")]
@@ -107,7 +110,7 @@ namespace HexTecGames.LeaderboardSystem
                 Debug.Log("Can only delete in PlayMode");
                 return;
             }
-            if (!isSignedIn)
+            if (!initSuccess)
             {
                 return;
             }
@@ -119,32 +122,22 @@ namespace HexTecGames.LeaderboardSystem
         }
         private async Task Init()
         {
-            if (UnityServices.State == ServicesInitializationState.Initialized)
-            {
-                Debug.Log("Already Initialized");               
-                await TrySignIn();
-                SetPlayerName(AuthenticationService.Instance.PlayerName);
-                return;
-            }
-            else await UnityServices.InitializeAsync();
-
+            triedInit = true;
             if (UnityServices.State != ServicesInitializationState.Initialized)
             {
-                Debug.Log("Failed to initialize UnityServices");
+                await UnityServices.InitializeAsync();
+            }
+            if (UnityServices.State != ServicesInitializationState.Initialized)
+            {
                 return;
             }
-            await TrySignIn();
 
-            SetPlayerName(AuthenticationService.Instance.PlayerName);
-        }
-        private async Task TrySignIn()
-        {
             if (!AuthenticationService.Instance.IsSignedIn)
             {
                 try
                 {
                     await AuthenticationService.Instance.SignInAnonymouslyAsync();
-                    isSignedIn = true;
+                    initSuccess = true;
                     loadingText.gameObject.SetActive(false);
                 }
                 catch (System.Exception e)
@@ -152,6 +145,16 @@ namespace HexTecGames.LeaderboardSystem
                     loadingText.text = "Could not connect!";
                     Debug.Log("Error when signing in: " + e.Message);
                 }
+            }
+            else
+            {
+                initSuccess = true;
+                loadingText.gameObject.SetActive(false);
+            }
+            
+            if (AuthenticationService.Instance.PlayerName != null)
+            {
+                SetPlayerName(AuthenticationService.Instance.PlayerName);
             }
         }
         public void LoadNameInput()
@@ -169,7 +172,7 @@ namespace HexTecGames.LeaderboardSystem
             playerHighscoreDisplay.UpdateName(PlayerName);
             if (PlayerItem != null)
             {
-                PlayerItem.name = PlayerName;                
+                PlayerItem.name = PlayerName;
             }
         }
         public void SetPlayerName(string name)
@@ -191,6 +194,10 @@ namespace HexTecGames.LeaderboardSystem
         }
         public async Task UpdatePlayerName(string name)
         {
+            if (!await AllowCalls())
+            {
+                return;
+            }
             var result = await AuthenticationService.Instance.UpdatePlayerNameAsync(name);
             if (!string.IsNullOrEmpty(result))
             {
@@ -220,7 +227,7 @@ namespace HexTecGames.LeaderboardSystem
         public async void RetrieveAndDisplayScore(int score)
         {
             gameObject.SetActive(true);
-            if (!isSignedIn)
+            if (!await AllowCalls())
             {
                 return;
             }
@@ -229,9 +236,9 @@ namespace HexTecGames.LeaderboardSystem
         }
         public async Task AddScore(double score)
         {
-            if (UnityServices.State != ServicesInitializationState.Initialized)
+            if (!await AllowCalls())
             {
-                await Init();
+                return;
             }
             var entry = await LeaderboardsService.Instance.AddPlayerScoreAsync(leaderboardId, score);
             PlayerItem = GenerateLeaderboardItem(entry);
@@ -242,10 +249,22 @@ namespace HexTecGames.LeaderboardSystem
             }
             playerHighscoreDisplay.gameObject.SetActive(true);
         }
+        private async Task<bool> AllowCalls()
+        {
+            if (initSuccess)
+            {
+                return true;
+            }
+            if (triedInit)
+            {
+                await Init();
+            }
+            return initSuccess;
+        }
         public async void ShowLeaderboard()
         {
             gameObject.SetActive(true);
-            if (!isSignedIn)
+            if (!await AllowCalls())
             {
                 return;
             }
@@ -258,7 +277,7 @@ namespace HexTecGames.LeaderboardSystem
         }
         public async void GetLeaderboardTopScores()
         {
-            if (!isSignedIn)
+            if (!await AllowCalls())
             {
                 return;
             }
@@ -287,7 +306,7 @@ namespace HexTecGames.LeaderboardSystem
         }
         public async Task<LeaderboardItem> GetPlayerScore()
         {
-            if (!isSignedIn)
+            if (!await AllowCalls())
             {
                 return null;
             }
@@ -310,7 +329,7 @@ namespace HexTecGames.LeaderboardSystem
         }
         public async void GetLeaderboardPage(int page)
         {
-            if (!isSignedIn)
+            if (!await AllowCalls())
             {
                 return;
             }
@@ -332,11 +351,10 @@ namespace HexTecGames.LeaderboardSystem
         }
         public async void DisplayPlayerPage()
         {
-            if (!isSignedIn)
+            if (!await AllowCalls())
             {
                 return;
             }
-
             var score = await GetPlayerScore();
             if (score == null)
             {
