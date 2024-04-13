@@ -85,7 +85,6 @@ namespace HexTecGames.LeaderboardSystem
             {
                 playerNameDisplay.gameObject.SetActive(!censorPlayerName);
             }
-            AuthenticationService.Instance.SignInFailed += Instance_SignInFailed;
             loadingText.gameObject.SetActive(true);
             if (string.IsNullOrEmpty(leaderboardId))
             {
@@ -98,14 +97,6 @@ namespace HexTecGames.LeaderboardSystem
                 playerHighscoreDisplay.SetItem(null);
             }
             Login();
-        }
-        void OnDisable()
-        {
-            AuthenticationService.Instance.SignInFailed -= Instance_SignInFailed;
-        }
-        private void Instance_SignInFailed(RequestFailedException e)
-        {
-            Debug.Log("Sign in failed: " + e.Message);
         }
 
         [ContextMenu("Delete Player Account")]
