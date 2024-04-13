@@ -1,6 +1,6 @@
 {
   "name": "com.hextecgames.leaderboardsystem",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "displayName": "LeaderboardSystem",
   "description": "Easy implementation for a Leaderboard",
   "unity": "2022.1",

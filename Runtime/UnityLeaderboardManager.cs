@@ -78,7 +78,19 @@ namespace HexTecGames.LeaderboardSystem
 
         void OnEnable()
         {
-            playerNameDisplay.gameObject.SetActive(!censorPlayerName);
+            if (playerNameDisplay != null)
+            {
+                playerNameDisplay.gameObject.SetActive(!censorPlayerName);
+            }
+            AuthenticationService.Instance.SignInFailed += Instance_SignInFailed;
+        }
+        void OnDisable()
+        {
+            AuthenticationService.Instance.SignInFailed -= Instance_SignInFailed;
+        }
+        private void Instance_SignInFailed(RequestFailedException e)
+        {
+            Debug.Log("Sign in failed: " + e.Message);
         }
 
         private void Start()
@@ -89,10 +101,21 @@ namespace HexTecGames.LeaderboardSystem
                 gameObject.SetActive(false);
                 return;
             }
-            playerHighscoreDisplay.SetItem(null);
+            if (playerHighscoreDisplay != null)
+            {
+                playerHighscoreDisplay.SetItem(null);
+            }          
             Login();
         }
-
+        [ContextMenu("Delete Player Account")]
+        public async void DeletePlayerAccount()
+        {
+            if (!await IsAPIWorking())
+            {
+                return;
+            }
+            await AuthenticationService.Instance.DeleteAccountAsync();
+        }
         private async void Login()
         {
             await Init();
@@ -198,12 +221,11 @@ namespace HexTecGames.LeaderboardSystem
         public async void RetrieveAndDisplayScore(int score)
         {
             gameObject.SetActive(true);
-            if (UnityServices.State != ServicesInitializationState.Initialized)
+            if (!await IsAPIWorking())
             {
-                await Init();
+                return;
             }
             await AddScore(score);
-            await Init();
             GetLeaderboardTopScores();
         }
         public async Task AddScore(double score)
