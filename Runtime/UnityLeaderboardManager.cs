@@ -262,7 +262,7 @@ namespace HexTecGames.LeaderboardSystem
             {
                 return true;
             }
-            if (triedInit)
+            if (!triedInit)
             {
                 await Init();
             }
