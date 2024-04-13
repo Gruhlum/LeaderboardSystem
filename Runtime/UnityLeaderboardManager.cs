@@ -224,7 +224,7 @@ namespace HexTecGames.LeaderboardSystem
         public async void ShowLeaderboard()
         {
             gameObject.SetActive(true);
-            if (!IsAPIWorking().Result)
+            if (!await IsAPIWorking())
             {
                 return;
             }
@@ -237,7 +237,7 @@ namespace HexTecGames.LeaderboardSystem
         }
         public async void GetLeaderboardTopScores()
         {
-            if (!IsAPIWorking().Result)
+            if (!await IsAPIWorking())
             {
                 return;
             }
@@ -280,7 +280,7 @@ namespace HexTecGames.LeaderboardSystem
         }
         public async Task<LeaderboardItem> GetPlayerScore()
         {
-            if (!IsAPIWorking().Result)
+            if (!await IsAPIWorking())
             {
                 return null;
             }
@@ -303,7 +303,7 @@ namespace HexTecGames.LeaderboardSystem
         }
         public async void GetLeaderboardPage(int page)
         {
-            if (!IsAPIWorking().Result)
+            if (!await IsAPIWorking())
             {
                 return;
             }
@@ -325,7 +325,7 @@ namespace HexTecGames.LeaderboardSystem
         }
         public async void DisplayPlayerPage()
         {
-            if (!IsAPIWorking().Result)
+            if (!await IsAPIWorking())
             {
                 return;
             }
