@@ -32,6 +32,14 @@ namespace HexTecGames.LeaderboardSystem
         [SerializeField] private bool censorOtherNames = default;
         [DrawIf(nameof(censorOtherNames), true)][SerializeField] private string otherNameOverride = "Player";
 
+        private bool IsInitAndSignedIn
+        {
+            get
+            {
+                return UnityServices.State == ServicesInitializationState.Initialized && AuthenticationService.Instance.IsSignedIn;
+            }
+        }
+
         private int currentPage;
         private int maximumPages = -1;
 
@@ -93,6 +101,8 @@ namespace HexTecGames.LeaderboardSystem
         {
             if (UnityServices.State == ServicesInitializationState.Initialized)
             {
+                Debug.Log("Already Initialized");
+                await TrySignIn();
                 SetPlayerName(AuthenticationService.Instance.PlayerName);
                 return;
             }
@@ -103,19 +113,24 @@ namespace HexTecGames.LeaderboardSystem
                 Debug.Log("Failed to initialize UnityServices");
                 return;
             }
+            await TrySignIn();
 
+
+            SetPlayerName(AuthenticationService.Instance.PlayerName);
+        }
+        private async Task TrySignIn()
+        {
             if (!AuthenticationService.Instance.IsSignedIn)
             {
                 try
                 {
                     await AuthenticationService.Instance.SignInAnonymouslyAsync();
                 }
-                catch (System.Exception)
+                catch (System.Exception e)
                 {
-                    Debug.Log("Error when signing in!");
+                    Debug.Log("Error when signing in: " + e.Message);
                 }
             }
-            SetPlayerName(AuthenticationService.Instance.PlayerName);
         }
         public void LoadNameInput()
         {
@@ -209,9 +224,9 @@ namespace HexTecGames.LeaderboardSystem
         public async void ShowLeaderboard()
         {
             gameObject.SetActive(true);
-            if (UnityServices.State != ServicesInitializationState.Initialized)
+            if (!IsAPIWorking().Result)
             {
-                await Init();
+                return;
             }
             var playerScore = await GetPlayerScore();
             if (playerScore != null)
@@ -222,12 +237,26 @@ namespace HexTecGames.LeaderboardSystem
         }
         public async void GetLeaderboardTopScores()
         {
-            if (UnityServices.State != ServicesInitializationState.Initialized)
+            if (!IsAPIWorking().Result)
             {
-                await Init();
+                return;
             }
             var scoresResponse = await LeaderboardsService.Instance.GetScoresAsync(leaderboardId);
             scoreDisplayC.SetItems(GenerateLeaderboardItems(scoresResponse.Results));
+        }
+        private async Task<bool> IsAPIWorking()
+        {
+            if (!IsInitAndSignedIn)
+            {
+                Debug.Log("Trying to init and sign in ...");
+                await Init();
+                if (!IsInitAndSignedIn)
+                {
+                    Debug.Log("... failed!");
+                    return false;
+                }
+            }
+            return true;
         }
         public void AddTestScore(int score)
         {
@@ -251,6 +280,10 @@ namespace HexTecGames.LeaderboardSystem
         }
         public async Task<LeaderboardItem> GetPlayerScore()
         {
+            if (!IsAPIWorking().Result)
+            {
+                return null;
+            }
             try
             {
                 var scoresResponse = await LeaderboardsService.Instance.GetPlayerScoreAsync(leaderboardId);
@@ -270,6 +303,10 @@ namespace HexTecGames.LeaderboardSystem
         }
         public async void GetLeaderboardPage(int page)
         {
+            if (!IsAPIWorking().Result)
+            {
+                return;
+            }
             currentPage = page;
             var scoreResponse = await LeaderboardsService.Instance.GetScoresAsync(leaderboardId,
                 new GetScoresOptions { Offset = page * entriesPerPage, Limit = entriesPerPage });
@@ -288,9 +325,9 @@ namespace HexTecGames.LeaderboardSystem
         }
         public async void DisplayPlayerPage()
         {
-            if (UnityServices.State != ServicesInitializationState.Initialized)
+            if (!IsAPIWorking().Result)
             {
-                await Init();
+                return;
             }
 
             var score = await GetPlayerScore();
