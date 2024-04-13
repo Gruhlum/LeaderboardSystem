@@ -8,8 +8,6 @@ namespace HexTecGames.LeaderboardSystem
 {
     public class ScoreDisplayController : DisplayController<LeaderboardItem>
     {        
-        [SerializeField] private TMP_Text loadingText = default;
-
         void Awake()
         {
             foreach (var display in displays)
@@ -30,8 +28,7 @@ namespace HexTecGames.LeaderboardSystem
         }
         public override void SetItems(List<LeaderboardItem> items, bool display = true)
         {
-            base.SetItems(items, display);
-            loadingText.gameObject.SetActive(items != null && items.Count <= 0);
+            base.SetItems(items, display);          
             gameObject.SetActive(true);
         }
     }
