@@ -79,28 +79,10 @@ namespace HexTecGames.LeaderboardSystem
          */
 
 
-        void OnEnable()
-        {
-            if (playerNameDisplay != null)
-            {
-                playerNameDisplay.gameObject.SetActive(!censorPlayerName);
-            }
-            loadingText.gameObject.SetActive(true);
-            if (string.IsNullOrEmpty(leaderboardId))
-            {
-                Debug.LogError("LeaderboardId is empty!");
-                gameObject.SetActive(false);
-                return;
-            }
-            if (playerHighscoreDisplay != null)
-            {
-                playerHighscoreDisplay.SetItem(null);
-            }
-            if (!triedInit)
-            {
-                Init();
-            }
-        }
+        //void OnEnable()
+        //{
+        //    Init();
+        //}
         void OnDisable()
         {
             triedInit = false;
@@ -126,6 +108,23 @@ namespace HexTecGames.LeaderboardSystem
                 return;
             }
             triedInit = true;
+
+            if (playerNameDisplay != null)
+            {
+                playerNameDisplay.gameObject.SetActive(!censorPlayerName);
+            }
+            loadingText.gameObject.SetActive(true);
+            if (string.IsNullOrEmpty(leaderboardId))
+            {
+                Debug.LogError("LeaderboardId is empty!");
+                gameObject.SetActive(false);
+                return;
+            }
+            if (playerHighscoreDisplay != null)
+            {
+                playerHighscoreDisplay.SetItem(null);
+            }
+
             if (UnityServices.State != ServicesInitializationState.Initialized)
             {
                 Debug.Log("Trying to initialize UnityServices");
@@ -398,7 +397,7 @@ namespace HexTecGames.LeaderboardSystem
             }
             else if (!isPlayer && censorOtherNames)
             {
-                entryPlayerName = $"{otherNameOverride} {leaderboardEntry.Rank}";
+                entryPlayerName = $"{otherNameOverride}{Random.Range(1000, 10000)}";
             }
             else if (truncateId)
             {
