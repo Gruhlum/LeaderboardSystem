@@ -289,6 +289,7 @@ namespace HexTecGames.LeaderboardSystem
             }
             var scoresResponse = await LeaderboardsService.Instance.GetScoresAsync(leaderboardId);
             scoreDisplayC.SetItems(GenerateLeaderboardItems(scoresResponse.Results));
+            currentPage = 0;
         }
         public void AddTestScore(int score)
         {

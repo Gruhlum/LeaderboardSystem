@@ -24,6 +24,7 @@ namespace HexTecGames.LeaderboardSystem
                 rankGUI.text = null;
                 nameGUI.text = null;
                 scoreGUI.text = null;
+                SetHighlight(false);
                 return;
             }
             rankGUI.text = item.rank.ToString();
