@@ -28,8 +28,30 @@ namespace HexTecGames.LeaderboardSystem
 
         [Header("Name Settings")]
         [SerializeField] private bool truncateId = true;
+        public bool CensorPlayerName
+        {
+            get
+            {
+                return censorPlayerName;
+            }
+            set
+            {
+                censorPlayerName = value;
+            }
+        }
         [SerializeField] private bool censorPlayerName = default;
         [DrawIf(nameof(censorPlayerName), true)][SerializeField] private string playerNameOverride = "You";
+        public bool CensorOtherNames
+        {
+            get
+            {
+                return censorOtherNames;
+            }
+            set
+            {
+                censorOtherNames = value;
+            }
+        }
         [SerializeField] private bool censorOtherNames = default;
         [DrawIf(nameof(censorOtherNames), true)][SerializeField] private string otherNameOverride = "Player";
 
