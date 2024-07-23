@@ -1,6 +1,6 @@
 {
   "name": "com.hextecgames.leaderboardsystem",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "displayName": "LeaderboardSystem",
   "description": "Easy implementation for a Leaderboard",
   "unity": "2022.1",
@@ -17,7 +17,7 @@
   "samples": [
     {
       "displayName": "Example 1",
-      "description": "Example 1 description",
+      "description": "Simple Leaderboard with up to 10 ranks per page, paging buttons to and buttons to view the top scores or the players score.",
       "path": "Samples/Example 1"
     }
   ]

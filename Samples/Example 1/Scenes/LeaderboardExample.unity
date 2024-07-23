@@ -510,6 +510,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4911351888766034287, guid: 66d53aadb32972149808ef959b721631, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4911351888766034287, guid: 66d53aadb32972149808ef959b721631, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1178963569}
@@ -518,11 +522,19 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4911351888766034287, guid: 66d53aadb32972149808ef959b721631, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4911351888766034287, guid: 66d53aadb32972149808ef959b721631, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ShowLeaderboard
       objectReference: {fileID: 0}
     - target: {fileID: 4911351888766034287, guid: 66d53aadb32972149808ef959b721631, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HexTecGames.LeaderboardSystem.UnityLeaderboardManager, HexTecGames.LeaderboardSystem
+      objectReference: {fileID: 0}
+    - target: {fileID: 4911351888766034287, guid: 66d53aadb32972149808ef959b721631, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
       value: HexTecGames.LeaderboardSystem.UnityLeaderboardManager, HexTecGames.LeaderboardSystem
       objectReference: {fileID: 0}
     - target: {fileID: 4911351888766034287, guid: 66d53aadb32972149808ef959b721631, type: 3}

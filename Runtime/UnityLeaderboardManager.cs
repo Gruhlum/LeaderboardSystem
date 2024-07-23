@@ -101,10 +101,13 @@ namespace HexTecGames.LeaderboardSystem
          */
 
 
-        //void OnEnable()
-        //{
-        //    Init();
-        //}
+        private void Awake()
+        {
+            if (playerNameDisplay != null)
+            {
+                playerNameDisplay.SetText(string.Empty);
+            }
+        }
         void OnDisable()
         {
             triedInit = false;
@@ -218,7 +221,11 @@ namespace HexTecGames.LeaderboardSystem
 
         public void NameInput_Confirmed(string input)
         {
-            UpdatePlayerName(input);
+            ProcessNameInput(input);
+        }
+        public async void ProcessNameInput(string input)
+        {
+            await UpdatePlayerName(input);
         }
         public async Task UpdatePlayerName(string name)
         {
@@ -226,11 +233,24 @@ namespace HexTecGames.LeaderboardSystem
             {
                 return;
             }
-            var result = await AuthenticationService.Instance.UpdatePlayerNameAsync(name);
-            if (!string.IsNullOrEmpty(result))
+            try
             {
-                SetPlayerName(result);
+                var result = await AuthenticationService.Instance.UpdatePlayerNameAsync(name);
+                Debug.Log("Changing Player name: " + result);
+
+                if (!string.IsNullOrEmpty(result))
+                {
+                    SetPlayerName(result);
+                }
             }
+            catch (System.Exception e)
+            {
+                Debug.Log(e.ToString());
+                return;
+            }
+            
+
+            
         }
 
         private string RemoveId(string input)
