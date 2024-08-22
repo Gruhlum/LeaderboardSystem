@@ -104,6 +104,11 @@ namespace HexTecGames.LeaderboardSystem
             {
                 ShowLeaderboard();
             }
+            if (playerNameDisplay != null)
+            {
+                playerNameDisplay.gameObject.SetActive(!censorPlayerName);
+            }
+            ShowPlayerScoreBtn.SetActive(false);
         }
         void OnDisable()
         {
@@ -131,11 +136,7 @@ namespace HexTecGames.LeaderboardSystem
             }
             triedInit = true;
 
-            if (playerNameDisplay != null)
-            {
-                playerNameDisplay.gameObject.SetActive(!censorPlayerName);
-            }
-            ShowPlayerScoreBtn.SetActive(false);
+            
             
             loadingText.gameObject.SetActive(true);
             if (string.IsNullOrEmpty(leaderboardId))
