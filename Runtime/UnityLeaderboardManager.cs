@@ -69,7 +69,6 @@ namespace HexTecGames.LeaderboardSystem
             private set
             {
                 this.playerScore = value;
-                ShowPlayerScoreBtn.SetActive(this.playerScore != null);
             }
         }
 
@@ -93,12 +92,17 @@ namespace HexTecGames.LeaderboardSystem
 
         private LeaderboardItem playerScore;
 
+        [SerializeField] private bool loadOnAwake = default;
 
         private void Awake()
         {
             if (playerNameDisplay != null)
             {
                 playerNameDisplay.SetText(string.Empty);
+            }
+            if (loadOnAwake)
+            {
+                ShowLeaderboard();
             }
         }
         void OnDisable()
@@ -131,6 +135,8 @@ namespace HexTecGames.LeaderboardSystem
             {
                 playerNameDisplay.gameObject.SetActive(!censorPlayerName);
             }
+            ShowPlayerScoreBtn.SetActive(false);
+            
             loadingText.gameObject.SetActive(true);
             if (string.IsNullOrEmpty(leaderboardId))
             {
@@ -180,9 +186,11 @@ namespace HexTecGames.LeaderboardSystem
 
             if (AuthenticationService.Instance.PlayerName == null)
             {
-                SetPlayerName("You");
+                playerNameDisplay.gameObject.SetActive(false);
             }
             SetPlayerName(AuthenticationService.Instance.PlayerName);
+            ShowPlayerScoreBtn.SetActive(this.playerScore != null);
+
         }
         public void LoadNameInput()
         {
