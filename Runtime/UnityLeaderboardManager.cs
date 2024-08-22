@@ -159,7 +159,9 @@ namespace HexTecGames.LeaderboardSystem
                 try
                 {
                     Debug.Log("Attempting to sign in");
-                    await AuthenticationService.Instance.SignInAnonymouslyAsync();
+                    SignInOptions options = new SignInOptions();
+                    options.CreateAccount = true;
+                    await AuthenticationService.Instance.SignInAnonymouslyAsync(options);
                     initSuccess = true;
                     Debug.Log("sign in success");
                     loadingText.gameObject.SetActive(false);
@@ -174,14 +176,13 @@ namespace HexTecGames.LeaderboardSystem
             {
                 initSuccess = true;
                 loadingText.gameObject.SetActive(false);
-            }
+            }    
 
-            Debug.Log("Player Name: " + AuthenticationService.Instance.PlayerName);
-
-            if (AuthenticationService.Instance.PlayerName != null)
+            if (AuthenticationService.Instance.PlayerName == null)
             {
-                SetPlayerName(AuthenticationService.Instance.PlayerName);
+                SetPlayerName("You");
             }
+            SetPlayerName(AuthenticationService.Instance.PlayerName);
         }
         public void LoadNameInput()
         {
@@ -242,10 +243,7 @@ namespace HexTecGames.LeaderboardSystem
             {
                 Debug.Log(e.ToString());
                 return;
-            }
-            
-
-            
+            }       
         }
 
         private string RemoveId(string input)
