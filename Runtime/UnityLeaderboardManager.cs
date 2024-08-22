@@ -106,7 +106,7 @@ namespace HexTecGames.LeaderboardSystem
             }
             if (playerNameDisplay != null)
             {
-                playerNameDisplay.gameObject.SetActive(!censorPlayerName);
+                playerNameDisplay.gameObject.SetActive(false);
             }
             ShowPlayerScoreBtn.SetActive(false);
         }
@@ -185,11 +185,11 @@ namespace HexTecGames.LeaderboardSystem
                 loadingText.gameObject.SetActive(false);
             }    
 
-            if (AuthenticationService.Instance.PlayerName == null)
+            if (AuthenticationService.Instance.PlayerName != null)
             {
-                playerNameDisplay.gameObject.SetActive(false);
-            }
-            SetPlayerName(AuthenticationService.Instance.PlayerName);
+                SetPlayerName(AuthenticationService.Instance.PlayerName);
+                playerNameDisplay.gameObject.SetActive(true);
+            }          
             ShowPlayerScoreBtn.SetActive(this.playerScore != null);
 
         }
