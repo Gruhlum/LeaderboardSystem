@@ -93,13 +93,6 @@ namespace HexTecGames.LeaderboardSystem
 
         private LeaderboardItem playerScore;
 
-        /* Only sign in OnEnable
-         * if it doesn't work show a message and turn a bool to false
-         * check that bool for every other call
-         * 
-         * 
-         */
-
 
         private void Awake()
         {
@@ -182,6 +175,8 @@ namespace HexTecGames.LeaderboardSystem
                 initSuccess = true;
                 loadingText.gameObject.SetActive(false);
             }
+
+            Debug.Log("Player Name: " + AuthenticationService.Instance.PlayerName);
 
             if (AuthenticationService.Instance.PlayerName != null)
             {
