@@ -104,10 +104,6 @@ namespace HexTecGames.LeaderboardSystem
             {
                 ShowLeaderboard();
             }
-            if (playerNameDisplay != null)
-            {
-                playerNameDisplay.gameObject.SetActive(false);
-            }
             ShowPlayerScoreBtn.SetActive(false);
         }
         void OnDisable()
@@ -135,9 +131,7 @@ namespace HexTecGames.LeaderboardSystem
                 return;
             }
             triedInit = true;
-
-            
-            
+          
             loadingText.gameObject.SetActive(true);
             if (string.IsNullOrEmpty(leaderboardId))
             {
@@ -188,7 +182,6 @@ namespace HexTecGames.LeaderboardSystem
             if (AuthenticationService.Instance.PlayerName != null)
             {
                 SetPlayerName(AuthenticationService.Instance.PlayerName);
-                playerNameDisplay.gameObject.SetActive(true);
             }          
             ShowPlayerScoreBtn.SetActive(this.playerScore != null);
 
