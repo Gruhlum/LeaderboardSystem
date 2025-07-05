@@ -6,11 +6,11 @@ using UnityEngine;
 
 namespace HexTecGames.LeaderboardSystem
 {
-    public class ScoreDisplayController : DisplayController<LeaderboardItem>
-    {        
+    public class ScoreDisplayController : DisplayController<ScoreDisplay, LeaderboardItem>
+    {
         void Awake()
         {
-            foreach (var display in displays)
+            foreach (var display in displaySpawner)
             {
                 display.SetItem(null);
             }
@@ -18,17 +18,17 @@ namespace HexTecGames.LeaderboardSystem
 
         public void UpdatePlayerName(string playerName)
         {
-            foreach (var display in displays)
+            foreach (var display in displaySpawner)
             {
-                if (display.IsHighlighted && display is ScoreDisplay scoreDisplay)
+                if (display.IsHighlighted)
                 {
-                    scoreDisplay.UpdateName(playerName);
+                    display.UpdateName(playerName);
                 }
             }
         }
-        public override void SetItems(List<LeaderboardItem> items, bool display = true)
+        public override void SetItems(IList<LeaderboardItem> items, bool display = true)
         {
-            base.SetItems(items, display);          
+            base.SetItems(items, display);
             gameObject.SetActive(true);
         }
     }

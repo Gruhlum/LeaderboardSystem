@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace HexTecGames.LeaderboardSystem
 {
-	public class ScoreDisplay : Display<LeaderboardItem>
+	public class ScoreDisplay : Display<ScoreDisplay, LeaderboardItem>
 	{
         [SerializeField] private TMP_Text rankGUI = default;
         [SerializeField] private TMP_Text nameGUI = default;
